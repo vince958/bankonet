@@ -12,7 +12,7 @@ import com.bankonet.exception.CompteException;
 
 public class InterfaceClient {
 	
-	Stockage bdd ;	
+	Stockage bdd;	
 	
 	public InterfaceClient(){
 		bdd = new Stockage("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
