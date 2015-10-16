@@ -3,20 +3,19 @@ package com.bankonet.ihm;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.bankonet.dao.ClientDao;
-import com.bankonet.dao.ClientDaoFile;
-import com.bankonet.metier.Client;
-import com.bankonet.metier.Compte;
-import com.bankonet.metier.CompteCourant;
-import com.bankonet.metier.CompteEpargne;
-import com.bankonet.metier.utils.exception.CompteException;
+import com.bankonet.metier.ClientService;
+import com.bankonet.utils.Client;
+import com.bankonet.utils.Compte;
+import com.bankonet.utils.CompteCourant;
+import com.bankonet.utils.CompteEpargne;
+import com.bankonet.utils.exception.CompteException;
 
 public class InterfaceClient {
 	
-	private ClientDao bdd;	
+	private ClientService clientService;	
 	
 	public InterfaceClient(){
-		bdd = new ClientDaoFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+		clientService = new ClientService("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
 	}
 	
 	public void menu(String login){
@@ -41,24 +40,24 @@ public class InterfaceClient {
 					break;
 					
 				case 1:
-					client = bdd.chargerClient(login);
+					client = clientService.getClient(login);
 					System.out.println(client.consulterComptes());
 					break;
 					
 				case 2:
-					client = bdd.chargerClient(login);
+					client = clientService.getClient(login);
 					effectuerDepotRetrait(client, true);
 					System.out.println(client.consulterComptes());
 					break;
 					
 				case 3:
-					client = bdd.chargerClient(login);
+					client = clientService.getClient(login);
 					effectuerDepotRetrait(client, false);
 					System.out.println(client.consulterComptes());
 					break;
 					
 				case 4:
-					client = bdd.chargerClient(login);
+					client = clientService.getClient(login);
 					effectuerVirementInterne(client);
 					System.out.println(client.consulterComptes());
 					break;
@@ -81,7 +80,7 @@ public class InterfaceClient {
 			System.out.println("Mot de Passe: ");
 			String mdp = input.nextLine();
 			
-			if(bdd.connexionClient(login, mdp)){
+			if(clientService.connexionClient(login, mdp)){
 				state = false;
 				menu(login);
 			}else
@@ -130,7 +129,7 @@ public class InterfaceClient {
 				} catch (CompteException e) {
 					e.printStackTrace();
 				}
-			bdd.ajouterModifier(client);
+			clientService.ajouterModifier(client);
 		}
 	}
 	
@@ -170,7 +169,7 @@ public class InterfaceClient {
 			} catch (CompteException e) {
 				e.printStackTrace();
 			}
-			bdd.ajouterModifier(client);
+			clientService.ajouterModifier(client);
 		}
 	}
 	

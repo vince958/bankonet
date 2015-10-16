@@ -1,11 +1,11 @@
 package com.bankonet.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import com.bankonet.metier.Compte;
+import com.bankonet.utils.Compte;
 
 public interface CompteDao {
-	public ArrayList<Compte> chargerComptes(String[] comptesString);
-	public void ajouterModifier(ArrayList<Compte> comptesList);
-	public void supprimer(String[] ident);
+	List<Compte> chargerComptes(List<String> comptesString);
+	void ajouterModifier(List<Compte> comptesList);
+	void supprimer(List<String> ident);
 }

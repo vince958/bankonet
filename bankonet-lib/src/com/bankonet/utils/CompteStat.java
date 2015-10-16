@@ -1,4 +1,4 @@
-package com.bankonet.metier;
+package com.bankonet.utils;
 
 public interface CompteStat {
 	public double getSolde();

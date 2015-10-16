@@ -7,11 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.bankonet.metier.Compte;
-import com.bankonet.metier.CompteCourant;
-import com.bankonet.metier.CompteEpargne;
-import com.bankonet.metier.utils.TypeCompte;
+import com.bankonet.utils.Compte;
+import com.bankonet.utils.CompteCourant;
+import com.bankonet.utils.CompteEpargne;
+import com.bankonet.utils.others.TypeCompte;
 
 public class CompteDaoFile implements CompteDao {
 
@@ -50,15 +51,15 @@ public class CompteDaoFile implements CompteDao {
 		return -1;
 	}
 	
-	private boolean isIn(String s, String[] sTab){
-		for(int i = 0; i < sTab.length; i++){
-			if(s.equals(sTab[i])) return true;
+	private boolean isIn(String s, List<String> sTab){
+		for(String element:sTab){
+			if(s.equals(element)) return true;
 		}
 		return false;
 	}
 	
 	@Override
-	public ArrayList<Compte> chargerComptes(String[] comptesString) {
+	public ArrayList<Compte> chargerComptes(List<String> comptesString) {
 		ArrayList<Compte> comptesRetour = new ArrayList<Compte>();
 		try(	FileReader comptes = new FileReader(comptesPropertiesPath);
 				BufferedReader input_comptes = new BufferedReader(comptes);){
@@ -86,7 +87,7 @@ public class CompteDaoFile implements CompteDao {
 	}
 
 	@Override
-	public void ajouterModifier(ArrayList<Compte> comptesList) {
+	public void ajouterModifier(List<Compte> comptesList) {
 		File fichierSav = new File(comptesPropertiesPath+".save");
 		File fichierBase = new File(comptesPropertiesPath);
 		ArrayList<String> idList = new ArrayList<String>();
@@ -124,7 +125,7 @@ public class CompteDaoFile implements CompteDao {
 	}
 
 	@Override
-	public void supprimer(String[] ident) {
+	public void supprimer(List<String> ident) {
 		// TODO Auto-generated method stub
 		
 	}

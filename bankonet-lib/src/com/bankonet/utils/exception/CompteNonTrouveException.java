@@ -1,4 +1,4 @@
-package com.bankonet.metier.utils.exception;
+package com.bankonet.utils.exception;
 
 public class CompteNonTrouveException extends CompteException {
 	

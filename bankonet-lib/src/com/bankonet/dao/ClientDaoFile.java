@@ -7,18 +7,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.bankonet.metier.Client;
-import com.bankonet.metier.Compte;
-import com.bankonet.metier.utils.Civilite;
+import com.bankonet.dao.dto.ClientComptesDTO;
+import com.bankonet.dao.dto.IdLibelleComptesDTO;
+import com.bankonet.utils.Client;
+import com.bankonet.utils.others.Civilite;
 
 public class ClientDaoFile implements ClientDao {
 
-	private CompteDaoFile bddComptes;
 	private String clientsPropertiesPath;
 	
-	public ClientDaoFile(String pclientsPropertiesPath, String pcomptesPropertiesPath){
-		bddComptes = new CompteDaoFile(pcomptesPropertiesPath);
+	public ClientDaoFile(String pclientsPropertiesPath){
 		clientsPropertiesPath = pclientsPropertiesPath;
 	}
 	
@@ -62,46 +62,35 @@ public class ClientDaoFile implements ClientDao {
 		
 		fichierBase.delete();
 		fichierSav.renameTo(fichierBase);
-		
-		ArrayList<Compte> comptesList = client.getComptesList();
-		bddComptes.ajouterModifier(comptesList);
 	}
 
 	@Override
-	public ArrayList<String[]> retournerIdClients() {
-		ArrayList<String[]> clientsString = new ArrayList<String[]>();
+	public List<IdLibelleComptesDTO> retournerIdClients() {
+		List<IdLibelleComptesDTO> dto = new ArrayList<IdLibelleComptesDTO>();
 		try(	FileReader clients = new FileReader(clientsPropertiesPath);
 				BufferedReader input_clients = new BufferedReader(clients);){
 		
 			String ligne;
 			while ((ligne=input_clients.readLine())!=null){
-				int nbCompteEpargne = 0;
-				int nbCompteCourant = 0;
 				String identifiant = ligne.split("=")[0];
 				String nom = ligne.split("nom:")[1].split("&")[0];
 				String prenom = ligne.split("prenom:")[1].split("&")[0];
-				
-				String[] comptesString = ligne.split("comptes:")[1].split(",");
-				ArrayList<Compte> comptes = bddComptes.chargerComptes(comptesString);
-				for(Compte compte:comptes)
-					if(compte.getType().equals("Courant"))
-						nbCompteCourant++;
-					else if(compte.getType().equals("Epargne"))
-						nbCompteEpargne++;
-				String[] client = new String[2];
-				client[0] = "\nIdentifiant: "+identifiant+" / Nom: "+nom+" / Prenom: "+prenom+" / Courant:"+nbCompteCourant+" / Epargne:"+nbCompteEpargne;
-				client[1] = identifiant;
-				clientsString.add(client);
+
+				List<String> comptesList= new ArrayList<String>();
+				String lib = "\nIdentifiant: "+identifiant+" / Nom: "+nom+" / Prenom: "+prenom;
+				for(String string:ligne.split("comptes:")[1].split(","))
+					comptesList.add(string);
+				dto.add(new IdLibelleComptesDTO(identifiant, lib, comptesList));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return clientsString;
+		return dto;
 	}
 
 	@Override
-	public Client chargerClient(String login) {
-		Client client = null;
+	public ClientComptesDTO chargerClient(String login) {
+		ClientComptesDTO dto = null;
 		try(	FileReader clients = new FileReader(clientsPropertiesPath);
 				BufferedReader input_clients = new BufferedReader(clients);){
 		
@@ -115,18 +104,18 @@ public class ClientDaoFile implements ClientDao {
 					String prenom = ligne.split("prenom:")[1].split("&")[0];
 					String mdp = ligne.split("mdp:")[1].split("&")[0];
 					Civilite civilite = Civilite.getCivilite(ligne.split("civilite:")[1].split("&")[0]);
-					client = new Client(identifiant, mdp, civilite, nom, prenom);
 					
-					String[] comptesString = ligne.split("comptes:")[1].split(",");
-					ArrayList<Compte> comptes = bddComptes.chargerComptes(comptesString);
-					for(Compte compte:comptes)
-						client.creerCompte(compte);
+					List<String> comptesString = new ArrayList<String>();
+					for(String string:ligne.split("comptes:")[1].split(","))
+						comptesString.add(string);
+					
+					dto = new ClientComptesDTO(new Client(identifiant, mdp, civilite, nom, prenom), comptesString);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return client;
+		return dto;
 	}
 
 	@Override

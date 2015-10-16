@@ -1,23 +1,23 @@
 package com.bankonet.ihm;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import com.bankonet.dao.ClientDao;
-import com.bankonet.dao.ClientDaoFile;
-import com.bankonet.metier.Client;
-import com.bankonet.metier.Compte;
-import com.bankonet.metier.CompteCourant;
-import com.bankonet.metier.CompteEpargne;
-import com.bankonet.metier.utils.Civilite;
-import com.bankonet.metier.utils.exception.TypeException;
+import com.bankonet.metier.ClientService;
+import com.bankonet.utils.Client;
+import com.bankonet.utils.Compte;
+import com.bankonet.utils.CompteCourant;
+import com.bankonet.utils.CompteEpargne;
+import com.bankonet.utils.exception.TypeException;
+import com.bankonet.utils.others.Civilite;
 
 public class InterfaceConseiller {
 	
-	private ClientDao bdd;	
+	private ClientService clientService;	
 	
 	public InterfaceConseiller(){
-		bdd = new ClientDaoFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+		clientService = new ClientService("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
 	}
 	
 	public void menu(){
@@ -51,7 +51,7 @@ public class InterfaceConseiller {
 					break;
 					
 				case 2:
-					ArrayList<String[]> clients = bdd.retournerIdClients();
+					List<String[]> clients = clientService.getLibelleList();
 					for(String[] client:clients)
 						System.out.print(client[0]);
 					break;
@@ -104,11 +104,11 @@ public class InterfaceConseiller {
 		CompteCourant compte = new CompteCourant(nom, prenom, 50.0d, 500.0d);
 		
 		client.creerCompte(compte);
-		bdd.ajouterModifier(client);
+		clientService.ajouterModifier(client);
 	}
 	
 	public void AjouterCompteCourantEpargne(boolean isCourant){
-		ArrayList<String[]> clientsString = bdd.retournerIdClients();
+		List<String[]> clientsString = clientService.getLibelleList();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
 		
@@ -118,7 +118,7 @@ public class InterfaceConseiller {
 		int num = input.nextInt();
 		input.nextLine();
 		
-		Client client = bdd.chargerClient(clientsString.get(num-1)[1]);
+		Client client = clientService.getClient(clientsString.get(num-1)[1]);
 		if(isCourant){
 			CompteCourant compte = new CompteCourant(client.getNom(), client.getPrenom(), 50.0d, 500.0d);
 			client.creerCompte(compte);
@@ -126,11 +126,11 @@ public class InterfaceConseiller {
 			CompteEpargne compte = new CompteEpargne(client.getNom(), client.getPrenom(), 50.0d, 2.5d);
 			client.creerCompte(compte);
 		}
-		bdd.ajouterModifier(client);
+		clientService.ajouterModifier(client);
 	}
 	
 	public void AjouterDecouvertAutorise(){
-		ArrayList<String[]> clientsString = bdd.retournerIdClients();
+		List<String[]> clientsString = clientService.getLibelleList();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
 		
@@ -140,7 +140,7 @@ public class InterfaceConseiller {
 		int numClient = input.nextInt();
 		input.nextLine();
 		
-		Client client = bdd.chargerClient(clientsString.get(numClient-1)[1]);
+		Client client = clientService.getClient(clientsString.get(numClient-1)[1]);
 		ArrayList<Compte> comptesList = client.getComptesList();
 		Compte[] comptesListCopie = new Compte[comptesList.size()];
 		int i = 0;
@@ -162,7 +162,7 @@ public class InterfaceConseiller {
 		input.nextLine();
 		
 		((CompteCourant)comptesListCopie[numCompte-1]).setDecouvertAutorise(montant);
-		bdd.ajouterModifier(client);
+		clientService.ajouterModifier(client);
 	}
 	
 	public static void main(String[] args) {

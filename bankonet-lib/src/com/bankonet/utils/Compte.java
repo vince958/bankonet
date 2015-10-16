@@ -1,8 +1,8 @@
-package com.bankonet.metier;
+package com.bankonet.utils;
 
-import com.bankonet.metier.utils.TypeCompte;
-import com.bankonet.metier.utils.exception.CompteException;
-import com.bankonet.metier.utils.exception.DebitException;
+import com.bankonet.utils.exception.CompteException;
+import com.bankonet.utils.exception.DebitException;
+import com.bankonet.utils.others.TypeCompte;
 
 public abstract class Compte implements CompteStat {
 	private static int nbTotal = 0;

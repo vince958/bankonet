@@ -1,13 +1,15 @@
 package com.bankonet.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import com.bankonet.metier.Client;
+import com.bankonet.dao.dto.ClientComptesDTO;
+import com.bankonet.dao.dto.IdLibelleComptesDTO;
+import com.bankonet.utils.Client;
 
 public interface ClientDao {
-	public void ajouterModifier(Client client);
-	public ArrayList<String[]> retournerIdClients();
-	public Client chargerClient(String login);
-	public boolean connexionClient(String login, String pmdp);
-	public void supprimer(String login);
+	void ajouterModifier(Client client);
+	List<IdLibelleComptesDTO> retournerIdClients();
+	ClientComptesDTO chargerClient(String login);
+	boolean connexionClient(String login, String pmdp);
+	void supprimer(String login);
 }
