@@ -1,21 +1,22 @@
-package com.bankonet.client;
+package com.bankonet.ihm;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.bankonet.dao.ClientDao;
+import com.bankonet.dao.ClientDaoFile;
 import com.bankonet.metier.Client;
 import com.bankonet.metier.Compte;
 import com.bankonet.metier.CompteCourant;
 import com.bankonet.metier.CompteEpargne;
-import com.bankonet.metier.StockageFile;
 import com.bankonet.metier.utils.exception.CompteException;
 
 public class InterfaceClient {
 	
-	private StockageFile bdd;	
+	private ClientDao bdd;	
 	
 	public InterfaceClient(){
-		bdd = new StockageFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+		bdd = new ClientDaoFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
 	}
 	
 	public void menu(String login){

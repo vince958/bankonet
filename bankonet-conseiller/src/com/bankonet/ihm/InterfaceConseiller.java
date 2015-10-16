@@ -1,22 +1,23 @@
-package com.bankonet.conseiller;
+package com.bankonet.ihm;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.bankonet.dao.ClientDao;
+import com.bankonet.dao.ClientDaoFile;
 import com.bankonet.metier.Client;
 import com.bankonet.metier.Compte;
 import com.bankonet.metier.CompteCourant;
 import com.bankonet.metier.CompteEpargne;
-import com.bankonet.metier.StockageFile;
 import com.bankonet.metier.utils.Civilite;
 import com.bankonet.metier.utils.exception.TypeException;
 
 public class InterfaceConseiller {
 	
-	private StockageFile bdd;	
+	private ClientDao bdd;	
 	
 	public InterfaceConseiller(){
-		bdd = new StockageFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+		bdd = new ClientDaoFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
 	}
 	
 	public void menu(){
@@ -50,7 +51,9 @@ public class InterfaceConseiller {
 					break;
 					
 				case 2:
-					System.out.println(bdd.afficherTousLesClient());
+					ArrayList<String[]> clients = bdd.retournerIdClients();
+					for(String[] client:clients)
+						System.out.print(client[0]);
 					break;
 					
 				case 3:
@@ -105,7 +108,7 @@ public class InterfaceConseiller {
 	}
 	
 	public void AjouterCompteCourantEpargne(boolean isCourant){
-		ArrayList<String[]> clientsString = bdd.retournerClients();
+		ArrayList<String[]> clientsString = bdd.retournerIdClients();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
 		
@@ -127,7 +130,7 @@ public class InterfaceConseiller {
 	}
 	
 	public void AjouterDecouvertAutorise(){
-		ArrayList<String[]> clientsString = bdd.retournerClients();
+		ArrayList<String[]> clientsString = bdd.retournerIdClients();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
 		
