@@ -1,4 +1,4 @@
-package com.bankonet.compte;
+package com.bankonet.metier;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,15 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.bankonet.Civilite;
-import com.bankonet.TypeCompte;
+import com.bankonet.metier.utils.Civilite;
+import com.bankonet.metier.utils.TypeCompte;
 
-public class Stockage {
+public class StockageFile {
 	
 	private String clientsPropertiesPath;
 	private String comptesPropertiesPath;
 	
-	public Stockage(String pclientsPropertiesPath, String pcomptesPropertiesPath){
+	public StockageFile(String pclientsPropertiesPath, String pcomptesPropertiesPath){
 		clientsPropertiesPath = pclientsPropertiesPath;
 		comptesPropertiesPath = pcomptesPropertiesPath;
 		
@@ -326,7 +326,7 @@ try {
         sb.append(line+"n");
     }
     reader.close();
-    //ici j'écrit le même fichier dans le même fichier sans la ligne supprimer
+    //ici j'ï¿½crit le mï¿½me fichier dans le mï¿½me fichier sans la ligne supprimer
     BufferedWriter out = new BufferedWriter(new FileWriter("C://Users//user//Documents//NetBeansProjects//jlis//src//jlis//listenoire.txt"));
     out.write(sb.toString());
     out.close();

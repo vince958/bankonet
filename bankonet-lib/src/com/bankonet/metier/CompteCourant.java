@@ -1,6 +1,6 @@
-package com.bankonet.compte;
+package com.bankonet.metier;
 
-import com.bankonet.TypeCompte;
+import com.bankonet.metier.utils.TypeCompte;
 
 public class CompteCourant extends Compte {
 	

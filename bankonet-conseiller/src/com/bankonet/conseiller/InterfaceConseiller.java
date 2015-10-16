@@ -3,20 +3,20 @@ package com.bankonet.conseiller;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.bankonet.*;
-import com.bankonet.compte.Client;
-import com.bankonet.compte.Compte;
-import com.bankonet.compte.CompteCourant;
-import com.bankonet.compte.CompteEpargne;
-import com.bankonet.compte.Stockage;
-import com.bankonet.exception.TypeException;
+import com.bankonet.metier.Client;
+import com.bankonet.metier.Compte;
+import com.bankonet.metier.CompteCourant;
+import com.bankonet.metier.CompteEpargne;
+import com.bankonet.metier.StockageFile;
+import com.bankonet.metier.utils.Civilite;
+import com.bankonet.metier.utils.exception.TypeException;
 
 public class InterfaceConseiller {
 	
-	Stockage bdd;	
+	private StockageFile bdd;	
 	
 	public InterfaceConseiller(){
-		bdd = new Stockage("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+		bdd = new StockageFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
 	}
 	
 	public void menu(){

@@ -1,4 +1,4 @@
-package com.bankonet;
+package com.bankonet.metier.utils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

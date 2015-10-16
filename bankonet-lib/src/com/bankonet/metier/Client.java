@@ -1,10 +1,10 @@
-package com.bankonet.compte;
+package com.bankonet.metier;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import com.bankonet.Civilite;
-import com.bankonet.ToString;
+import com.bankonet.metier.utils.Civilite;
+import com.bankonet.metier.utils.ToString;
 
 public class Client {
 	private String mdp = "secret";

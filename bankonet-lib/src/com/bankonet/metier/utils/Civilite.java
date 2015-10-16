@@ -1,4 +1,4 @@
-package com.bankonet;
+package com.bankonet.metier.utils;
 
 public enum Civilite {
 	MONSIEUR("Monsieur"), MADAME("Madame"), MADEMOISELLE("Mademoiselle");

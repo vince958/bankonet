@@ -1,4 +1,4 @@
-package com.bankonet;
+package com.bankonet.metier.utils;
 
 public enum TypeCompte {
 	COURANT("Courant", "CC"), EPARGNE("Epargne", "CE");

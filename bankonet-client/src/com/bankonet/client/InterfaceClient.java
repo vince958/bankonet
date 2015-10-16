@@ -3,19 +3,19 @@ package com.bankonet.client;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.bankonet.compte.Client;
-import com.bankonet.compte.Compte;
-import com.bankonet.compte.CompteCourant;
-import com.bankonet.compte.CompteEpargne;
-import com.bankonet.compte.Stockage;
-import com.bankonet.exception.CompteException;
+import com.bankonet.metier.Client;
+import com.bankonet.metier.Compte;
+import com.bankonet.metier.CompteCourant;
+import com.bankonet.metier.CompteEpargne;
+import com.bankonet.metier.StockageFile;
+import com.bankonet.metier.utils.exception.CompteException;
 
 public class InterfaceClient {
 	
-	Stockage bdd;	
+	private StockageFile bdd;	
 	
 	public InterfaceClient(){
-		bdd = new Stockage("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+		bdd = new StockageFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
 	}
 	
 	public void menu(String login){

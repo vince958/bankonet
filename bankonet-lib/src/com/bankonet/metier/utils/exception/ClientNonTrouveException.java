@@ -1,4 +1,4 @@
-package com.bankonet.exception;
+package com.bankonet.metier.utils.exception;
 
 public class ClientNonTrouveException extends CompteException {
 	
