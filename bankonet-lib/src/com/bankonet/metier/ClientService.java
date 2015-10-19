@@ -3,10 +3,9 @@ package com.bankonet.metier;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bankonet.dao.ClientDao;
-import com.bankonet.dao.ClientDaoFile;
-import com.bankonet.dao.CompteDao;
-import com.bankonet.dao.CompteDaoFile;
+import com.bankonet.dao.DaoFactory;
+import com.bankonet.dao.client.ClientDao;
+import com.bankonet.dao.compte.CompteDao;
 import com.bankonet.dao.dto.ClientComptesDTO;
 import com.bankonet.dao.dto.IdLibelleComptesDTO;
 import com.bankonet.utils.Client;
@@ -16,9 +15,9 @@ public class ClientService {
 	private CompteDao daoComptes;
 	private ClientDao daoClients;
 	
-	public ClientService(String pclientsPropertiesPath, String pcomptesPropertiesPath){
-		daoComptes = new CompteDaoFile(pcomptesPropertiesPath);
-		daoClients = new ClientDaoFile(pclientsPropertiesPath);
+	public ClientService(DaoFactory factory){
+		daoComptes = factory.getCompteDao();
+		daoClients = factory.getClientDao();
 	}
 	
 	public void ajouterModifier(Client client) {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.bankonet.dao.DaoFactory;
+import com.bankonet.dao.DaoFactoryFile;
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.Compte;
@@ -16,8 +18,8 @@ public class InterfaceConseiller {
 	
 	private ClientService clientService;	
 	
-	public InterfaceConseiller(){
-		clientService = new ClientService("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+	public InterfaceConseiller(DaoFactory factory){
+		clientService = new ClientService(factory);		
 	}
 	
 	public void menu(){
@@ -166,7 +168,7 @@ public class InterfaceConseiller {
 	}
 	
 	public static void main(String[] args) {
-		InterfaceConseiller fenetre = new InterfaceConseiller();
+		InterfaceConseiller fenetre = new InterfaceConseiller(new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties"));
 		fenetre.menu();
 	}
 

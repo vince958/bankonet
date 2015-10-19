@@ -1,4 +1,4 @@
-package com.bankonet.dao;
+package com.bankonet.dao.compte;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

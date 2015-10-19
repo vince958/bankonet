@@ -1,4 +1,4 @@
-package com.bankonet.dao;
+package com.bankonet.dao.compte;
 
 import java.util.List;
 

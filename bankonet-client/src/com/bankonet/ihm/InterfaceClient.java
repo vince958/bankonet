@@ -3,6 +3,8 @@ package com.bankonet.ihm;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.bankonet.dao.DaoFactory;
+import com.bankonet.dao.DaoFactoryFile;
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.Compte;
@@ -14,8 +16,8 @@ public class InterfaceClient {
 	
 	private ClientService clientService;	
 	
-	public InterfaceClient(){
-		clientService = new ClientService("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");		
+	public InterfaceClient(DaoFactory factory){
+		clientService = new ClientService(factory);		
 	}
 	
 	public void menu(String login){
@@ -174,7 +176,7 @@ public class InterfaceClient {
 	}
 	
 	public static void main(String[] args) {
-		InterfaceClient fenetre = new InterfaceClient();
+		InterfaceClient fenetre = new InterfaceClient(new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties"));
 		fenetre.ouvrirSession();
 	}
 
