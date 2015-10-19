@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.bankonet.dao.DaoFactory;
-import com.bankonet.dao.DaoFactoryFile;
+import com.bankonet.dao.DaoFactorySQL;
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.Compte;
@@ -17,10 +17,10 @@ public class InterfaceClient {
 	private ClientService clientService;	
 	
 	public InterfaceClient(DaoFactory factory){
-		clientService = new ClientService(factory);		
+		clientService = new ClientService(factory.getClientDao(), factory.getCompteDao());		
 	}
 	
-	public void menu(String login){
+	public void menu(String login, Scanner input){
 		while(true){
 			System.out.print( 
 					"\n***** APPLICATION CLIENT *****\n\n"+
@@ -32,8 +32,6 @@ public class InterfaceClient {
 					"Action: "
 					);
 			
-			@SuppressWarnings("resource")
-			Scanner input = new Scanner(System.in);
 			Client client = null;
 			switch(input.nextInt()){
 				case 0:
@@ -48,19 +46,19 @@ public class InterfaceClient {
 					
 				case 2:
 					client = clientService.getClient(login);
-					effectuerDepotRetrait(client, true);
+					effectuerDepotRetrait(client, true, input);
 					System.out.println(client.consulterComptes());
 					break;
 					
 				case 3:
 					client = clientService.getClient(login);
-					effectuerDepotRetrait(client, false);
+					effectuerDepotRetrait(client, false, input);
 					System.out.println(client.consulterComptes());
 					break;
 					
 				case 4:
 					client = clientService.getClient(login);
-					effectuerVirementInterne(client);
+					effectuerVirementInterne(client, input);
 					System.out.println(client.consulterComptes());
 					break;
 					
@@ -72,7 +70,6 @@ public class InterfaceClient {
 	}
 	
 	public void ouvrirSession(){
-		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
 		boolean state = true;
 		while(state){
@@ -84,19 +81,17 @@ public class InterfaceClient {
 			
 			if(clientService.connexionClient(login, mdp)){
 				state = false;
-				menu(login);
+				menu(login, input);
 			}else
 				System.out.println("Login ou mdp incorrect!");
 		}
 	}
 	
-	public void effectuerDepotRetrait(Client client, boolean isDepot){
+	public void effectuerDepotRetrait(Client client, boolean isDepot, Scanner input){
 		ArrayList<Compte> comptesList = client.getComptesList();
 		for(int i = 0; i < comptesList.size(); i++)
 			System.out.println((i+1)+". "+comptesList.get(i).getLibelle());
 		
-		@SuppressWarnings("resource")
-		Scanner input = new Scanner(System.in);
 		System.out.println("Selectionnez un compte: ");
 		int num = input.nextInt();
 		input.nextLine();
@@ -135,13 +130,11 @@ public class InterfaceClient {
 		}
 	}
 	
-	public void effectuerVirementInterne(Client client){
+	public void effectuerVirementInterne(Client client, Scanner input){
 		ArrayList<Compte> comptesList = client.getComptesList();
 		for(int i = 0; i < comptesList.size(); i++)
 			System.out.println((i+1)+". "+comptesList.get(i).getLibelle());
 		
-		@SuppressWarnings("resource")
-		Scanner input = new Scanner(System.in);
 		System.out.println("Selectionnez un compte a debiter: ");
 		int numDebiteur = input.nextInt();
 		input.nextLine();
@@ -176,7 +169,9 @@ public class InterfaceClient {
 	}
 	
 	public static void main(String[] args) {
-		InterfaceClient fenetre = new InterfaceClient(new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties"));
+		//DaoFactory factory = new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");
+		DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
+		InterfaceClient fenetre = new InterfaceClient(factory);
 		fenetre.ouvrirSession();
 	}
 

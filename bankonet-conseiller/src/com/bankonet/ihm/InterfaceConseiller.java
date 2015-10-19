@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.bankonet.dao.DaoFactory;
-import com.bankonet.dao.DaoFactoryFile;
+import com.bankonet.dao.DaoFactorySQL;
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.Compte;
@@ -19,7 +19,7 @@ public class InterfaceConseiller {
 	private ClientService clientService;	
 	
 	public InterfaceConseiller(DaoFactory factory){
-		clientService = new ClientService(factory);		
+		clientService = new ClientService(factory.getClientDao(), factory.getCompteDao());		
 	}
 	
 	public void menu(){
@@ -35,7 +35,6 @@ public class InterfaceConseiller {
 					"Action: "
 					);
 			
-			@SuppressWarnings("resource")
 			Scanner input = new Scanner(System.in);
 			
 			switch(input.nextInt()){
@@ -46,7 +45,7 @@ public class InterfaceConseiller {
 					
 				case 1:
 					try {
-						ouvrirCompte();
+						ouvrirCompte(input);
 					} catch (TypeException e) {
 						e.printStackTrace();
 					}
@@ -59,15 +58,15 @@ public class InterfaceConseiller {
 					break;
 					
 				case 3:
-					AjouterCompteCourantEpargne(true);
+					AjouterCompteCourantEpargne(true, input);
 					break;
 					
 				case 4:
-					AjouterCompteCourantEpargne(false);
+					AjouterCompteCourantEpargne(false, input);
 					break;
 					
 				case 5:
-					AjouterDecouvertAutorise();
+					AjouterDecouvertAutorise(input);
 					break;
 					
 				default:
@@ -77,9 +76,7 @@ public class InterfaceConseiller {
 		}
 	}
 	
-	public void ouvrirCompte() throws TypeException{
-		@SuppressWarnings("resource")
-		Scanner input = new Scanner(System.in);
+	public void ouvrirCompte(Scanner input) throws TypeException{
 		
 		System.out.println("Entrez la civilite(1.Mr 2.Mme 3.Mlle): ");
 		int temp = input.nextInt();
@@ -109,13 +106,10 @@ public class InterfaceConseiller {
 		clientService.ajouterModifier(client);
 	}
 	
-	public void AjouterCompteCourantEpargne(boolean isCourant){
+	public void AjouterCompteCourantEpargne(boolean isCourant, Scanner input){
 		List<String[]> clientsString = clientService.getLibelleList();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
-		
-		@SuppressWarnings("resource")
-		Scanner input = new Scanner(System.in);
 		System.out.println("Selectionnez un client: ");
 		int num = input.nextInt();
 		input.nextLine();
@@ -131,29 +125,24 @@ public class InterfaceConseiller {
 		clientService.ajouterModifier(client);
 	}
 	
-	public void AjouterDecouvertAutorise(){
+	public void AjouterDecouvertAutorise(Scanner input){
 		List<String[]> clientsString = clientService.getLibelleList();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
 		
-		@SuppressWarnings("resource")
-		Scanner input = new Scanner(System.in);
-		System.out.println("Selectionnez un compte: ");
+		System.out.println("Selectionnez un client: ");
 		int numClient = input.nextInt();
 		input.nextLine();
 		
 		Client client = clientService.getClient(clientsString.get(numClient-1)[1]);
 		ArrayList<Compte> comptesList = client.getComptesList();
-		Compte[] comptesListCopie = new Compte[comptesList.size()];
-		int i = 0;
-		for(Compte compte:comptesList){
-			if(compte.getType().equals("Courant")){
-				comptesListCopie[i] = compte;
-				i++;
-			}
-		}
-		for(i = 0; i < comptesListCopie.length; i++)
-			System.out.println((i+1)+". "+comptesListCopie[i].getLibelle());
+		ArrayList<Compte> comptesListCopie = new ArrayList<Compte>();
+		for(Compte compte:comptesList)
+			if(compte.getType().equals("Courant"))
+				comptesListCopie.add(compte);
+
+		for(int i = 0; i < comptesListCopie.size(); i++)
+			System.out.println((i+1)+". "+comptesListCopie.get(i).getLibelle());
 		
 		System.out.println("Selectionnez un compte: ");
 		int numCompte = input.nextInt();
@@ -163,12 +152,14 @@ public class InterfaceConseiller {
 		double montant = input.nextDouble();
 		input.nextLine();
 		
-		((CompteCourant)comptesListCopie[numCompte-1]).setDecouvertAutorise(montant);
+		((CompteCourant)comptesListCopie.get(numCompte-1)).setDecouvertAutorise(montant);
 		clientService.ajouterModifier(client);
 	}
 	
 	public static void main(String[] args) {
-		InterfaceConseiller fenetre = new InterfaceConseiller(new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties"));
+		//DaoFactory factory = new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");
+		DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
+		InterfaceConseiller fenetre = new InterfaceConseiller(factory);
 		fenetre.menu();
 	}
 

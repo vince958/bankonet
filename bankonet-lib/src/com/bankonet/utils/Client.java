@@ -44,8 +44,12 @@ public class Client {
 	
 	public String consulterComptes(){
 		String comptes = "Comptes Associes: \n{\n";
-		for(Compte i:comptesList)
-			comptes += i.getLibelle()+" - "+i.getSolde()+"\n";
+		for(Compte i:comptesList){
+			if(i.getType().equals("Courant"))
+				comptes += i.getLibelle()+" - Solde: "+i.getSolde()+" - Decouvert Autorise: "+((CompteCourant)i).getMontantDecouvertAutorise()+"\n";
+			else
+				comptes += i.getLibelle()+" - Solde: "+i.getSolde()+" - Taux d'interet: "+((CompteEpargne)i).getTauxInteret()+"\n";
+		}
 		comptes += "}\n";
 		return comptes;
 	}
@@ -77,4 +81,6 @@ public class Client {
 	
 	public String getNom(){return nom;}
 	public String getPrenom(){return prenom;}
+	public Civilite getCivilite(){return civilite;}
+	public String getMdp(){return mdp;}
 }
