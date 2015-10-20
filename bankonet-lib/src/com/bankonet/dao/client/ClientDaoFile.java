@@ -43,7 +43,7 @@ public class ClientDaoFile implements ClientDao {
 			while ((ligne=input_clients.readLine())!=null){
 				nbLignes++;
 				String identifiant = ligne.split("=")[0];
-				if(identifiant.equals(client.getId())){
+				if(identifiant.equals(client.getLogin())){
 					state = true;
 					output_clients.write(client.genererSauvegarde());
 					output_clients.flush();
@@ -141,8 +141,7 @@ public class ClientDaoFile implements ClientDao {
 
 	@Override
 	public void supprimer(String login) {
-		// TODO Auto-generated method stub
-		
+		// A ecrire
 	}
 
 }

@@ -1,44 +1,53 @@
 package com.bankonet.utils;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import com.bankonet.utils.others.Civilite;
-import com.bankonet.utils.others.ToString;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.bankonet.utils.others.Civilite;
+
+@Entity
+@Table(name="clients")
 public class Client {
+	@Id
+	@GeneratedValue
+	private int id;
+	@Column(name = "prenom", length = 200, nullable = false, unique = true)
+	private String prenom;
+	@Column(name="password", length = 200, nullable = false)
 	private String mdp = "secret";
-	@ToString private String prenom;
-	@ToString(upperCase = true) private String nom;
-	@ToString private Civilite civilite;
-	@ToString private String identifiant;
+	@Column(length = 200, nullable = false)
+	private String nom;
+	@Column(length = 200, nullable = false)
+	private String login;
+	@Transient
+	private Civilite civilite;
+	@Transient
 	private ArrayList<Compte> comptesList;
 	
-	public Client(String pidentifiant, String pmdp, Civilite pcivilite , String pnom, String pprenom){
+	public Client(){}
+	
+	public Client(String plogin, String pmdp, Civilite pcivilite , String pnom, String pprenom){
 		civilite = pcivilite;
 		mdp = pmdp;
 		prenom = pprenom;
 		nom = pnom;
-		identifiant = pidentifiant;
+		login = plogin;
 		
 		comptesList = new ArrayList<Compte>();
 	}
 	
 	public String toString(){
 		String comptes = consulterComptes();
-		
-		for(Field champ:Client.class.getDeclaredFields()){
-			ToString ann = champ.getAnnotation(ToString.class);
-			if(ann != null)
-				try {
-					if(ann.upperCase()) comptes = champ.getName()+": "+(champ.get(this)+"\n").toUpperCase()+comptes;
-					else comptes = champ.getName()+": "+champ.get(this)+"\n"+comptes;
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-		}
+		comptes = 	"Civilite: "+civilite+"\n"+
+					"Nom: "+nom+"\n"+
+					"Prenom: "+prenom+"\n"+
+					"Identifiant: "+login+"\n"+comptes;
 		return comptes;
 	}
 	
@@ -73,14 +82,22 @@ public class Client {
 		String comptes = "";
 		for(Compte i:comptesList)
 			comptes+=i.getIntitule()+",";
-		return identifiant+"=mdp:"+mdp+"&nom:"+nom+"&prenom:"+prenom+"&civilite:"+civilite+"&comptes:"+comptes.substring(0, comptes.length()-1)+"\n";
+		return login+"=mdp:"+mdp+"&nom:"+nom+"&prenom:"+prenom+"&civilite:"+civilite+"&comptes:"+comptes.substring(0, comptes.length()-1)+"\n";
 	}
 	
 	public ArrayList<Compte> getComptesList(){ return comptesList; }
-	public String getId(){return identifiant;}
 	
+	public int getId(){return id;}
+	public String getLogin(){return login;}
 	public String getNom(){return nom;}
 	public String getPrenom(){return prenom;}
 	public Civilite getCivilite(){return civilite;}
 	public String getMdp(){return mdp;}
+	
+	public void setId(int pid){id = pid;}
+	public void setLogin(String plogin){login = plogin;}
+	public void setNom(String pnom){nom = pnom;}
+	public void setPrenom(String pprenom){prenom = pprenom;}
+	public void setCivilite(Civilite pcivilite){civilite = pcivilite;}
+	public void setMdp(String pmdp){mdp = pmdp;}
 }

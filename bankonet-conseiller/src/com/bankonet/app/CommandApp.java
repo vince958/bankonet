@@ -9,22 +9,28 @@ import com.bankonet.command.AjouterCompteEpargneCommand;
 import com.bankonet.command.AutoriserDecouvertCommand;
 import com.bankonet.command.ExitCommand;
 import com.bankonet.command.IhmCommand;
+import com.bankonet.command.InitClientsCommand;
 import com.bankonet.command.ListerClientsCommand;
 import com.bankonet.command.OuvrirCompteCourantCommand;
 import com.bankonet.dao.DaoFactory;
+import com.bankonet.dao.DaoFactoryJpa;
 import com.bankonet.dao.DaoFactorySQL;
 import com.bankonet.metier.ClientService;
+import com.bankonet.metier.InitService;
 
 public class CommandApp {
 	
 	//private static DaoFactory factory = new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");
 	private static DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
+	private static DaoFactory factoryJpa = new DaoFactoryJpa("bankonet-lib");
 	private ClientService clientService;
+	private InitService initService;
 	private Scanner input;
 	private List<IhmCommand> commandList;
 	
 	public CommandApp() {
 		clientService = new ClientService(factory.getClientDao(), factory.getCompteDao());
+		initService = new InitService(factoryJpa.getClientDao());
 		input = new Scanner(System.in);
 		commandList = Arrays.asList(	
 				new ExitCommand(),
@@ -32,7 +38,8 @@ public class CommandApp {
 				new ListerClientsCommand(clientService),
 				new AjouterCompteCourantCommand(clientService, input),
 				new AjouterCompteEpargneCommand(clientService, input),
-				new AutoriserDecouvertCommand(clientService, input)
+				new AutoriserDecouvertCommand(clientService, input),
+				new InitClientsCommand(initService)
 			);
 		System.out.print("\n***** APPLICATION CONSEILLER BANCAIRE *****");
 	}

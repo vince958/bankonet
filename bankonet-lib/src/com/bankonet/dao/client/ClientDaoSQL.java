@@ -37,16 +37,16 @@ public class ClientDaoSQL implements ClientDao {
 		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
 			Statement statement = bdd.createStatement();
 			statement.execute(
-					"INSERT INTO clients (login, password, nom, prenom, civilite) VALUES ('"+client.getId()+"', '"+client.getMdp()+"', '"+client.getNom()+"', '"+client.getPrenom()+"', '"+client.getCivilite()+"')"+
-					"  ON DUPLICATE KEY UPDATE login='"+client.getId()+"', password='"+client.getMdp()+"', nom='"+client.getNom()+"', prenom='"+client.getPrenom()+"', civilite='"+client.getCivilite()+"' ;"
+					"INSERT INTO clients (login, password, nom, prenom, civilite) VALUES ('"+client.getLogin()+"', '"+client.getMdp()+"', '"+client.getNom()+"', '"+client.getPrenom()+"', '"+client.getCivilite()+"')"+
+					"  ON DUPLICATE KEY UPDATE login='"+client.getLogin()+"', password='"+client.getMdp()+"', nom='"+client.getNom()+"', prenom='"+client.getPrenom()+"', civilite='"+client.getCivilite()+"' ;"
 					);
 			statement.close();
 			for(Compte compte:client.getComptesList()) {
 				Statement st = bdd.createStatement();
-				ResultSet resultat = st.executeQuery("SELECT * FROM clients_comptes WHERE login='"+client.getId()+"' && intitule='"+compte.getIntitule()+"';");
+				ResultSet resultat = st.executeQuery("SELECT * FROM clients_comptes WHERE login='"+client.getLogin()+"' && intitule='"+compte.getIntitule()+"';");
 				if(!resultat.next()){
 					st.execute(
-						"INSERT INTO clients_comptes (login, intitule) VALUES ('"+client.getId()+"', '"+compte.getIntitule()+"');"
+						"INSERT INTO clients_comptes (login, intitule) VALUES ('"+client.getLogin()+"', '"+compte.getIntitule()+"');"
 						);
 				}
 				
