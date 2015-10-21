@@ -18,15 +18,14 @@ import com.bankonet.command.SupprimerCommand;
 import com.bankonet.command.SupprimerTousCommand;
 import com.bankonet.dao.DaoFactory;
 import com.bankonet.dao.DaoFactoryJpa;
-import com.bankonet.dao.DaoFactorySQL;
 import com.bankonet.metier.ClientService;
 import com.bankonet.metier.InitService;
 
 public class CommandApp {
 	
 	//private static DaoFactory factory = new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");
-	private static DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
-	private static DaoFactory factoryJpa = new DaoFactoryJpa("bankonet-lib");
+	//private static DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
+	private static DaoFactory factory = new DaoFactoryJpa("bankonet-lib");
 	private ClientService clientService;
 	private InitService initService;
 	private Scanner input;
@@ -34,7 +33,7 @@ public class CommandApp {
 	
 	public CommandApp() {
 		clientService = new ClientService(factory.getClientDao(), factory.getCompteDao());
-		initService = new InitService(factoryJpa.getClientDao());
+		initService = new InitService(factory.getClientDao(), factory.getCompteDao());
 		input = new Scanner(System.in);
 		commandList = Arrays.asList(	
 				new ExitCommand(),

@@ -90,4 +90,10 @@ public class CompteDaoSQL implements CompteDao {
 		}
 	}
 
+	@Override
+	public void toutSupprimer() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

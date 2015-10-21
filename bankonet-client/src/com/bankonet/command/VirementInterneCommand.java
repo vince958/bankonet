@@ -1,6 +1,6 @@
 package com.bankonet.command;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.bankonet.metier.ClientService;
@@ -32,7 +32,7 @@ public class VirementInterneCommand extends IhmCommand {
 	}
 	
 	public void effectuerVirementInterne(Client client, Scanner input){
-		ArrayList<Compte> comptesList = client.getComptesList();
+		List<Compte> comptesList = client.getComptesList();
 		for(int i = 0; i < comptesList.size(); i++)
 			System.out.println((i+1)+". "+comptesList.get(i).getLibelle());
 		
@@ -43,7 +43,7 @@ public class VirementInterneCommand extends IhmCommand {
 		System.out.println("Selectionnez un compte a crediter: ");
 		int numCrediteur = input.nextInt();
 		input.nextLine();
-		String typeDebiteur = comptesList.get(numDebiteur-1).getType();
+		String typeDebiteur = comptesList.get(numDebiteur-1).getType().getValue();
 		
 		boolean testRetrait = false;
 		double montant = 0;

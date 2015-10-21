@@ -1,15 +1,23 @@
 package com.bankonet.utils;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import com.bankonet.utils.exception.CompteException;
 import com.bankonet.utils.exception.CreditException;
 import com.bankonet.utils.others.TypeCompte;
 
+@Entity
+@DiscriminatorValue("EPARGNE")
 public class CompteEpargne extends Compte{
 	
 	private static final double PLAFOND = 12000;
-	
+	@Column(name="taux", length = 200, nullable = false)
 	private double tauxInteret;
 	private static int nbComptesEpargnes = 0;
+	
+	public CompteEpargne(){}
 	
 	public CompteEpargne(String nom, String prenom, double psolde, double ptauxInteret){
 		super(TypeCompte.EPARGNE, nom, prenom, psolde);
@@ -49,4 +57,6 @@ public class CompteEpargne extends Compte{
 	public double getTauxInteret(){ return tauxInteret; }
 	public int getCount(){return nbComptesEpargnes; }
 	public static void setNbComptesEpargnes(int nb){ nbComptesEpargnes = nb; }
+	
+	public void setTauxInteret(double ptauxInteret){tauxInteret = ptauxInteret;}
 }

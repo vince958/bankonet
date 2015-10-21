@@ -1,11 +1,20 @@
 package com.bankonet.utils;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import com.bankonet.utils.others.TypeCompte;
 
+@Entity
+@DiscriminatorValue("COURANT")
 public class CompteCourant extends Compte {
 	
+	@Column(name="decouvert", length = 200, nullable = false)
 	private double montantDecouvertAutorise;
 	private static int nbComptesCourants = 0;
+	
+	public CompteCourant(){}
 	
 	public CompteCourant(String nom, String prenom, double psolde, double pmontantDecouvertAutorise){
 		super(TypeCompte.COURANT, nom, prenom, psolde);
@@ -37,5 +46,5 @@ public class CompteCourant extends Compte {
 	public int getCount(){return nbComptesCourants;}
 	public double getMontantDecouvertAutorise(){return montantDecouvertAutorise;}
 	public static void setNbComptesCourants(int nb){ nbComptesCourants = nb; }
-	public void setDecouvertAutorise(double d){ montantDecouvertAutorise = d; }
+	public void setMontantDecouvertAutorise(double pmontantDecouvertAutorise){ montantDecouvertAutorise = pmontantDecouvertAutorise; }
 }

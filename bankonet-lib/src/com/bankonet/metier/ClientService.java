@@ -21,7 +21,7 @@ public class ClientService {
 	
 	public void ajouterModifier(Client client) {
 		daoClients.ajouterModifier(client);
-		ArrayList<Compte> comptesList = client.getComptesList();
+		List<Compte> comptesList = client.getComptesList();
 		daoComptes.ajouterModifier(comptesList);
 	}
 	
@@ -32,11 +32,12 @@ public class ClientService {
 			int nbCompteEpargne = 0;
 			int nbCompteCourant = 0;
 			List<Compte> comptes = daoComptes.chargerComptes(dto.getComptesList());
-			for(Compte compte:comptes)
+			for(Compte compte:comptes){
 				if(compte.getType().equals("Courant"))
 					nbCompteCourant++;
 				else if(compte.getType().equals("Epargne"))
 					nbCompteEpargne++;
+			}
 			libelleId.add(new String[] {dto.getLibelle()+" / Courant:"+nbCompteCourant+" / Epargne:"+nbCompteEpargne, dto.getId()});
 		}
 		return libelleId;

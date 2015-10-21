@@ -1,6 +1,6 @@
 package com.bankonet.command;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.bankonet.metier.ClientService;
@@ -32,7 +32,7 @@ public class RetraitCommand extends IhmCommand{
 	}
 	
 	public void effectuerDepotRetrait(Client client, boolean isDepot, Scanner input){
-		ArrayList<Compte> comptesList = client.getComptesList();
+		List<Compte> comptesList = client.getComptesList();
 		for(int i = 0; i < comptesList.size(); i++)
 			System.out.println((i+1)+". "+comptesList.get(i).getLibelle());
 		
@@ -40,7 +40,7 @@ public class RetraitCommand extends IhmCommand{
 		int num = input.nextInt();
 		input.nextLine();
 
-		String type = comptesList.get(num-1).getType();
+		String type = comptesList.get(num-1).getType().getValue();
 		boolean testRetrait = false;
 		double montant = 0;
 		double debitMax = 0;

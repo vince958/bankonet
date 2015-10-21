@@ -36,7 +36,7 @@ public class AutoriserDecouvertCommand extends IhmCommand{
 		input.nextLine();
 		
 		Client client = clientService.getClient(clientsString.get(numClient-1)[1]);
-		ArrayList<Compte> comptesList = client.getComptesList();
+		List<Compte> comptesList = client.getComptesList();
 		ArrayList<Compte> comptesListCopie = new ArrayList<Compte>();
 		for(Compte compte:comptesList)
 			if(compte.getType().equals("Courant"))
@@ -53,7 +53,7 @@ public class AutoriserDecouvertCommand extends IhmCommand{
 		double montant = input.nextDouble();
 		input.nextLine();
 		
-		((CompteCourant)comptesListCopie.get(numCompte-1)).setDecouvertAutorise(montant);
+		((CompteCourant)comptesListCopie.get(numCompte-1)).setMontantDecouvertAutorise(montant);
 		clientService.ajouterModifier(client);
 	}
 	

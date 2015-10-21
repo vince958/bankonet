@@ -88,6 +88,7 @@ public class ClientDaoJpa implements ClientDao{
 		List<Client> clients = findAllClients();
 		for(Client client:clients){
 			String lib = "\nIdentifiant: "+client.getLogin()+" / Nom: "+client.getNom()+" / Prenom: "+client.getPrenom();
+			
 			List<String> comptesList = new ArrayList<String>();
 			listClients.add(new IdLibelleComptesDTO(client.getLogin(), lib, comptesList));
 		}
