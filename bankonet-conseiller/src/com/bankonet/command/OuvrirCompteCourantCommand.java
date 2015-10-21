@@ -8,7 +8,7 @@ import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.exception.TypeException;
 import com.bankonet.utils.others.Civilite;
 
-public class OuvrirCompteCourantCommand implements IhmCommand{
+public class OuvrirCompteCourantCommand extends IhmCommand{
 
 	private static final int id = 1;
 	private static final String libelle = "Ouvrir un compte courant";

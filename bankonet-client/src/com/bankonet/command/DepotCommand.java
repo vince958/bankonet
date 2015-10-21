@@ -10,7 +10,7 @@ import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.CompteEpargne;
 import com.bankonet.utils.exception.CompteException;
 
-public class DepotCommand implements IhmCommand{
+public class DepotCommand extends IhmCommand{
 
 	private static final int id = 2;
 	private static final String libelle = "Effectuer un depot";

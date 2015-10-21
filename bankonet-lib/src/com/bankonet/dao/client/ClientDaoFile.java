@@ -77,7 +77,7 @@ public class ClientDaoFile implements ClientDao {
 				String prenom = ligne.split("prenom:")[1].split("&")[0];
 
 				List<String> comptesList= new ArrayList<String>();
-				String lib = "\nIdentifiant: "+identifiant+" / Nom: "+nom+" / Prenom: "+prenom;
+				String lib = "\nLogin: "+identifiant+" / Nom: "+nom+" / Prenom: "+prenom;
 				for(String string:ligne.split("comptes:")[1].split(","))
 					comptesList.add(string);
 				dto.add(new IdLibelleComptesDTO(identifiant, lib, comptesList));
@@ -142,6 +142,18 @@ public class ClientDaoFile implements ClientDao {
 	@Override
 	public void supprimer(String login) {
 		// A ecrire
+	}
+
+	@Override
+	public List<Client> rechercher(String nom, String prenom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void toutSupprimer() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

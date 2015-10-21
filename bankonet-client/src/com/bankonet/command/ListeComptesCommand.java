@@ -3,7 +3,7 @@ package com.bankonet.command;
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 
-public class ListeComptesCommand implements IhmCommand{
+public class ListeComptesCommand extends IhmCommand{
 
 	private static final int id = 1;
 	private static final String libelle = "Consulter les soldes des comptes";

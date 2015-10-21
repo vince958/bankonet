@@ -11,5 +11,7 @@ public interface ClientDao {
 	List<IdLibelleComptesDTO> retournerIdClients();
 	ClientComptesDTO chargerClient(String login);
 	boolean connexionClient(String login, String pmdp);
+	List<Client> rechercher(String nom, String prenom);
 	void supprimer(String login);
+	void toutSupprimer();
 }

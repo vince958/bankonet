@@ -9,7 +9,7 @@ import com.bankonet.utils.Client;
 import com.bankonet.utils.Compte;
 import com.bankonet.utils.CompteCourant;
 
-public class AutoriserDecouvertCommand implements IhmCommand{
+public class AutoriserDecouvertCommand extends IhmCommand{
 
 	private static final int id = 5;
 	private static final String libelle = "Autoriser un decouvert";

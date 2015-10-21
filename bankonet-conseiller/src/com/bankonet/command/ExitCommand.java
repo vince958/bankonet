@@ -1,6 +1,6 @@
 package com.bankonet.command;
 
-public class ExitCommand implements IhmCommand{
+public class ExitCommand extends IhmCommand{
 
 	private static final int id = 0;
 	private static final String libelle = "Arreter le programme";

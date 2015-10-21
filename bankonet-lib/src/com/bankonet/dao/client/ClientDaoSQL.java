@@ -69,7 +69,7 @@ public class ClientDaoSQL implements ClientDao {
 				String login = resultat.getString("login");
 				String nom = resultat.getString("nom");
 				String prenom = resultat.getString("prenom");
-				String lib = "\nIdentifiant: "+login+" / Nom: "+nom+" / Prenom: "+prenom;
+				String lib = "\nLogin: "+login+" / Nom: "+nom+" / Prenom: "+prenom;
 				
 				Statement statement_comptes = bdd.createStatement();
 				ResultSet resultat_comptes = statement_comptes.executeQuery("SELECT intitule FROM clients_comptes WHERE login='"+login+"';");
@@ -136,6 +136,18 @@ public class ClientDaoSQL implements ClientDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
+	}
+
+	@Override
+	public List<Client> rechercher(String nom, String prenom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void toutSupprimer() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

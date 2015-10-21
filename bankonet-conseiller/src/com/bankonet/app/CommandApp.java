@@ -11,7 +11,11 @@ import com.bankonet.command.ExitCommand;
 import com.bankonet.command.IhmCommand;
 import com.bankonet.command.InitClientsCommand;
 import com.bankonet.command.ListerClientsCommand;
+import com.bankonet.command.ModifierCommand;
 import com.bankonet.command.OuvrirCompteCourantCommand;
+import com.bankonet.command.RechercherCommand;
+import com.bankonet.command.SupprimerCommand;
+import com.bankonet.command.SupprimerTousCommand;
 import com.bankonet.dao.DaoFactory;
 import com.bankonet.dao.DaoFactoryJpa;
 import com.bankonet.dao.DaoFactorySQL;
@@ -39,7 +43,11 @@ public class CommandApp {
 				new AjouterCompteCourantCommand(clientService, input),
 				new AjouterCompteEpargneCommand(clientService, input),
 				new AutoriserDecouvertCommand(clientService, input),
-				new InitClientsCommand(initService)
+				new InitClientsCommand(initService),
+				new RechercherCommand(initService, input),
+				new ModifierCommand(initService, input),
+				new SupprimerCommand(initService, input),
+				new SupprimerTousCommand(initService)
 			);
 		System.out.print("\n***** APPLICATION CONSEILLER BANCAIRE *****");
 	}

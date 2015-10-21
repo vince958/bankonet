@@ -10,7 +10,7 @@ import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.CompteEpargne;
 import com.bankonet.utils.exception.CompteException;
 
-public class RetraitCommand implements IhmCommand{
+public class RetraitCommand extends IhmCommand{
 
 	private static final int id = 3;
 	private static final String libelle = "Effectuer un retrait";

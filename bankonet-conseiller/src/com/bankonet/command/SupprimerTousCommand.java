@@ -2,19 +2,19 @@ package com.bankonet.command;
 
 import com.bankonet.metier.InitService;
 
-public class InitClientsCommand extends IhmCommand{
+public class SupprimerTousCommand extends IhmCommand{
 
-	private static final int id = 6;
-	private static final String libelle = "Init Clients";
+	private static final int id = 10;
+	private static final String libelle = "Supprimer TOUS les clients";
 	private InitService initService;
 	
-	public InitClientsCommand(InitService pinitService) {
+	public SupprimerTousCommand(InitService pinitService) {
 		initService = pinitService;
 	}
 	
 	@Override
 	public void execute() {
-		initService.init();
+		initService.supprimerTous();
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import com.bankonet.utils.Client;
 import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.CompteEpargne;
 
-public class AjouterCompteCourantCommand implements IhmCommand{
+public class AjouterCompteCourantCommand extends IhmCommand{
 
 	private static final int id = 3;
 	private static final String libelle = "Ajouter un compte courant";

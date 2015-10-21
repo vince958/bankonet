@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.bankonet.metier.ClientService;
 
-public class ListerClientsCommand implements IhmCommand{
+public class ListerClientsCommand extends IhmCommand{
 
 	private static final int id = 2;
 	private static final String libelle = "Lister tous les clients";
