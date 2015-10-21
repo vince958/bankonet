@@ -117,9 +117,8 @@ public class ClientDaoSQL implements ClientDao {
 		boolean connexion = false;
 		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
 			Statement statement = bdd.createStatement();
-			ResultSet resultat = statement.executeQuery("SELECT password FROM clients WHERE login='"+login+"';");
-			resultat.next();
-			if(pmdp.equals(resultat.getString("password")))
+			ResultSet resultat = statement.executeQuery("SELECT password FROM clients WHERE login='"+login+"' AND password='"+pmdp+"';");
+			if(resultat.next())
 				connexion = true;
 			
 			statement.close();

@@ -6,12 +6,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.bankonet.utils.others.Civilite;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="clients.findClientByLogin", query="select c from Client c where c.login=:login"),
+	@NamedQuery(name="clients.findAllClients", query="select c from Client c"),
+	@NamedQuery(name="clients.existClientLoginPass", query="select c from Client c where c.login=:login AND c.mdp=:mdp"),
+	@NamedQuery(name="clients.findClientByFirstLastName", query="select c from Client c where c.nom=:nom or c.prenom=:prenom")
+})
 @Table(name="clients")
 public class Client {
 	@Id
