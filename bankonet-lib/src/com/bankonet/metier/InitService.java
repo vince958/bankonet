@@ -1,5 +1,6 @@
 package com.bankonet.metier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bankonet.dao.client.ClientDao;
@@ -51,7 +52,12 @@ public class InitService {
 	}
 	
 	public List<Client> rechercherClient(String nom, String prenom){
-		return clientDao.rechercher(nom, prenom);
+		List<Client> clients = new ArrayList<Client>();
+		for(ClientComptesDTO ccd:clientDao.rechercher(nom, prenom)){
+			ccd.getClient().setComptesList(compteDao.chargerComptes(ccd.getComptesList()));
+			clients.add(ccd.getClient());
+		}
+		return clients;
 	}
 	
 	public void modifierClient(String login, String nom, String prenom){
@@ -62,10 +68,31 @@ public class InitService {
 	}
 	
 	public void supprimerClient(String login){
+		Client client = clientDao.chargerClient(login).getClient();
+		List<Compte> comptes = client.getComptesList();
 		clientDao.supprimer(login);
+		List<Client> clients = new ArrayList<Client>();
+		for(ClientComptesDTO ccd:clientDao.getAllClients()){
+			ccd.getClient().setComptesList(compteDao.chargerComptes(ccd.getComptesList()));
+			clients.add(ccd.getClient());
+		}
+		for(Client clientTemp:clients){
+			List<Compte> comptesTemp = clientTemp.getComptesList();
+			for(Compte compte:comptes){
+				for(Compte compteTemp:comptesTemp){
+					if(compte.getIntitule().equals(compteTemp.getIntitule()))
+						comptes.remove(compte);
+				}
+			}
+		}
+		List<String> comptesString = new ArrayList<String>();
+		for(Compte compte:comptes)
+			comptesString.add(compte.getIntitule());
+		compteDao.supprimer(comptesString);
 	}
 	
 	public void supprimerTous(){
 		clientDao.toutSupprimer();
+		compteDao.toutSupprimer();
 	}
 }

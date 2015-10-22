@@ -131,22 +131,69 @@ public class ClientDaoSQL implements ClientDao {
 	@Override
 	public void supprimer(String login) {
 		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
-			
+			Statement statement = bdd.createStatement();
+			statement.execute("DELETE FROM clients where login='"+login+"';");
+			statement.execute("DELETE FROM clients_comptes where login='"+login+"';");
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
 	}
 
 	@Override
-	public List<Client> rechercher(String nom, String prenom) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClientComptesDTO> rechercher(String nom, String prenom) {
+		List<ClientComptesDTO> ccdList = new ArrayList<ClientComptesDTO>();
+		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
+			Statement statement = bdd.createStatement();
+			ResultSet resultat = statement.executeQuery("SELECT * FROM clients where nom='"+nom+"' OR prenom='"+prenom+"';");
+			while(resultat.next()){
+				Client client = new Client(resultat.getString("login"), resultat.getString("password"), Civilite.getCivilite(resultat.getString("civilite")), resultat.getString("nom"), resultat.getString("prenom"));
+				Statement statement_comptes = bdd.createStatement();
+				ResultSet resultat_comptes = statement_comptes.executeQuery("SELECT intitule FROM clients_comptes WHERE login='"+resultat.getString("login")+"';");
+				ArrayList<String> comptesList = new ArrayList<String>();
+				while(resultat_comptes.next())
+					comptesList.add(resultat_comptes.getString("intitule"));
+				ccdList.add(new ClientComptesDTO(client, comptesList));
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return ccdList;
 	}
 
 	@Override
 	public void toutSupprimer() {
-		// TODO Auto-generated method stub
-		
+		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
+			Statement statement = bdd.createStatement();
+			statement.execute("DELETE FROM clients;");
+			statement.execute("DELETE FROM clients_comptes;");
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+
+	@Override
+	public List<ClientComptesDTO> getAllClients() {
+		List<ClientComptesDTO> ccdList = new ArrayList<ClientComptesDTO>();
+		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
+			Statement statement = bdd.createStatement();
+			ResultSet resultat = statement.executeQuery("SELECT * FROM clients;");
+			while(resultat.next()){
+				Client client = new Client(resultat.getString("login"), resultat.getString("password"), Civilite.getCivilite(resultat.getString("civilite")), resultat.getString("nom"), resultat.getString("prenom"));
+				Statement statement_comptes = bdd.createStatement();
+				ResultSet resultat_comptes = statement_comptes.executeQuery("SELECT intitule FROM clients_comptes WHERE login='"+resultat.getString("login")+"';");
+				ArrayList<String> comptesList = new ArrayList<String>();
+				while(resultat_comptes.next())
+					comptesList.add(resultat_comptes.getString("intitule"));
+				ccdList.add(new ClientComptesDTO(client, comptesList));
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		return ccdList;
 	}
 
 }

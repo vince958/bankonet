@@ -31,11 +31,10 @@ public class ClientService {
 		for(IdLibelleComptesDTO dto:dtoList){
 			int nbCompteEpargne = 0;
 			int nbCompteCourant = 0;
-			List<Compte> comptes = daoComptes.chargerComptes(dto.getComptesList());
-			for(Compte compte:comptes){
-				if(compte.getType().equals("Courant"))
+			for(Compte compte:daoComptes.chargerComptes(dto.getComptesList())){
+				if(compte.getType().getValue().equals("Courant"))
 					nbCompteCourant++;
-				else if(compte.getType().equals("Epargne"))
+				else if(compte.getType().getValue().equals("Epargne"))
 					nbCompteEpargne++;
 			}
 			libelleId.add(new String[] {dto.getLibelle()+" / Courant:"+nbCompteCourant+" / Epargne:"+nbCompteEpargne, dto.getId()});
@@ -46,9 +45,7 @@ public class ClientService {
 	public Client getClient(String login){
 		ClientComptesDTO dto = daoClients.chargerClient(login);
 		Client client = dto.getClient();
-		List<Compte> comptes = daoComptes.chargerComptes(dto.getComptesList());
-		for(Compte compte:comptes)
-			client.creerCompte(compte);
+		client.setComptesList(daoComptes.chargerComptes(dto.getComptesList()));
 		return client;
 	}
 	

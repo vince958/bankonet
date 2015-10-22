@@ -74,7 +74,7 @@ public class Client implements Serializable {
 	public String consulterComptes(){
 		String comptes = "Comptes Associes: \n{\n";
 		for(Compte i:comptesList){
-			if(i.getType().equals("Courant"))
+			if(i.getType().getValue().equals("Courant"))
 				comptes += i.getLibelle()+" - Solde: "+i.getSolde()+" - Decouvert Autorise: "+((CompteCourant)i).getMontantDecouvertAutorise()+"\n";
 			else
 				comptes += i.getLibelle()+" - Solde: "+i.getSolde()+" - Taux d'interet: "+((CompteEpargne)i).getTauxInteret()+"\n";

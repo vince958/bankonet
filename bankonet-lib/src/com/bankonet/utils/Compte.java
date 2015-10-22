@@ -1,10 +1,10 @@
 package com.bankonet.utils;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -26,12 +26,16 @@ import com.bankonet.utils.others.TypeCompte;
 })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class Compte implements CompteStat {
+public abstract class Compte implements CompteStat, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	private int id;
 	private static int nbTotal = 0;
-	@Transient @Enumerated(EnumType.STRING) private TypeCompte type;
+	@Transient private TypeCompte type;
+	@Column(name="type", length = 200, nullable = false, insertable = false, updatable = false)
+	private String aType;
 	@Column(length = 200, nullable = false, unique = true)
 	private String numero;
 	@Column(length = 200, nullable = false, unique = true)
@@ -104,6 +108,7 @@ public abstract class Compte implements CompteStat {
 	public TypeCompte getType(){return type;}
 	public int getNbTotal(){ return nbTotal; }
 	public String getLibelle(){ return libelle; }
+	public String getAType(){return aType;}
 	
 	public static void setNbTotal(int nb){ nbTotal = nb; }
 	public void setId(int pid){id = pid;}

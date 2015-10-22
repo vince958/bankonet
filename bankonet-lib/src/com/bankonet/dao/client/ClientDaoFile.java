@@ -145,7 +145,7 @@ public class ClientDaoFile implements ClientDao {
 	}
 
 	@Override
-	public List<Client> rechercher(String nom, String prenom) {
+	public List<ClientComptesDTO> rechercher(String nom, String prenom) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -154,6 +154,12 @@ public class ClientDaoFile implements ClientDao {
 	public void toutSupprimer() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<ClientComptesDTO> getAllClients() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -29,6 +29,31 @@ public class CompteDaoSQL implements CompteDao {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
+		int nbTotal = 0;
+		int nbCourant = 0;
+		int nbEpargne = 0;
+		
+		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
+			Statement statement = bdd.createStatement();
+			ResultSet resultat = statement.executeQuery("SELECT * FROM comptes;");
+			resultat.last();
+			nbTotal = resultat.getRow();
+			
+			resultat = statement.executeQuery("SELECT * FROM comptes WHERE type='COURANT';");
+			resultat.last();
+			nbCourant = resultat.getRow();
+			
+			resultat = statement.executeQuery("SELECT * FROM comptes WHERE intitule='EPARGNE';");
+			resultat.last();
+			nbEpargne = resultat.getRow();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Compte.setNbTotal(nbTotal);
+		CompteCourant.setNbComptesCourants(nbCourant);
+		CompteEpargne.setNbComptesEpargnes(nbEpargne);
 	}
 	
 	@Override
@@ -63,7 +88,7 @@ public class CompteDaoSQL implements CompteDao {
 			double decouvert;
 			for(Compte compte:comptesList){
 				Statement statement = bdd.createStatement();
-				if(compte.getType().equals("Courant")){
+				if(compte.getType().getValue().equals("Courant")){
 					decouvert = ((CompteCourant)compte).getMontantDecouvertAutorise();
 					taux = 0f;
 				}else{
@@ -82,9 +107,13 @@ public class CompteDaoSQL implements CompteDao {
 	}
 
 	@Override
-	public void supprimer(List<String> ident) {
+	public void supprimer(List<String> intitules) {
 		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
-			
+			for(String intitule:intitules){
+				Statement statement = bdd.createStatement();
+				statement.execute("DELETE FROM clients where intitule='"+intitule+"';");
+				statement.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -92,8 +121,13 @@ public class CompteDaoSQL implements CompteDao {
 
 	@Override
 	public void toutSupprimer() {
-		// TODO Auto-generated method stub
-		
+		try(Connection bdd = DriverManager.getConnection(url, user, password);) {
+			Statement statement = bdd.createStatement();
+			statement.execute("DELETE FROM comptes;");
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
 	}
 
 }

@@ -11,13 +11,14 @@ import com.bankonet.command.ListeComptesCommand;
 import com.bankonet.command.RetraitCommand;
 import com.bankonet.command.VirementInterneCommand;
 import com.bankonet.dao.DaoFactory;
-import com.bankonet.dao.DaoFactorySQL;
+import com.bankonet.dao.DaoFactoryJpa;
 import com.bankonet.metier.ClientService;
 
 public class CommandApp {
 	
 	//private static DaoFactory factory = new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");
-	private static DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
+	//private static DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
+	private static DaoFactory factory = new DaoFactoryJpa("bankonet-lib");
 	private ClientService clientService;
 	private String login;
 	private Scanner input;
