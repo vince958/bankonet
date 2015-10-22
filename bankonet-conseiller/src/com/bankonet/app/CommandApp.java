@@ -2,7 +2,6 @@ package com.bankonet.app;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import com.bankonet.command.AjouterCompteCourantCommand;
 import com.bankonet.command.AjouterCompteEpargneCommand;
@@ -20,6 +19,7 @@ import com.bankonet.dao.DaoFactory;
 import com.bankonet.dao.DaoFactoryJpa;
 import com.bankonet.metier.ClientService;
 import com.bankonet.metier.InitService;
+import com.bankonet.utils.others.InputSingleton;
 
 public class CommandApp {
 	
@@ -28,24 +28,23 @@ public class CommandApp {
 	private static DaoFactory factory = new DaoFactoryJpa("bankonet-lib");
 	private ClientService clientService;
 	private InitService initService;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	private List<IhmCommand> commandList;
 	
 	public CommandApp() {
 		clientService = new ClientService(factory.getClientDao(), factory.getCompteDao());
 		initService = new InitService(factory.getClientDao(), factory.getCompteDao());
-		input = new Scanner(System.in);
 		commandList = Arrays.asList(	
 				new ExitCommand(),
-				new OuvrirCompteCourantCommand(clientService, input),
+				new OuvrirCompteCourantCommand(clientService),
 				new ListerClientsCommand(clientService),
-				new AjouterCompteCourantCommand(clientService, input),
-				new AjouterCompteEpargneCommand(clientService, input),
-				new AutoriserDecouvertCommand(clientService, input),
+				new AjouterCompteCourantCommand(clientService),
+				new AjouterCompteEpargneCommand(clientService),
+				new AutoriserDecouvertCommand(clientService),
 				new InitClientsCommand(initService),
-				new RechercherCommand(initService, input),
-				new ModifierCommand(initService, input),
-				new SupprimerCommand(initService, input),
+				new RechercherCommand(initService),
+				new ModifierCommand(initService),
+				new SupprimerCommand(initService),
 				new SupprimerTousCommand(initService)
 			);
 		System.out.print("\n***** APPLICATION CONSEILLER BANCAIRE *****");
@@ -56,9 +55,7 @@ public class CommandApp {
 			System.out.println("\n\n");
 			for(IhmCommand command:commandList)
 				System.out.println(command.getId()+". "+command.getLibelle());
-			System.out.println("Action: ");
-			int choix = input.nextInt();
-			input.nextLine();
+			int choix = input.readInt("Action: ", 0, commandList.size()-1);
 			
 			for(IhmCommand command:commandList)
 				if(command.getId() == choix)

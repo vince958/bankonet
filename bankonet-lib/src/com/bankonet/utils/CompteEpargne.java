@@ -12,6 +12,7 @@ import com.bankonet.utils.others.TypeCompte;
 @DiscriminatorValue("EPARGNE")
 public class CompteEpargne extends Compte{
 	
+	private static final long serialVersionUID = 1L;
 	private static final double PLAFOND = 12000;
 	@Column(name="taux", length = 200, nullable = false)
 	private double tauxInteret;

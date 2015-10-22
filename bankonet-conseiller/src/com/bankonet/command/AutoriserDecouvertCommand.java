@@ -2,38 +2,35 @@ package com.bankonet.command;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.Compte;
 import com.bankonet.utils.CompteCourant;
+import com.bankonet.utils.others.InputSingleton;
 
 public class AutoriserDecouvertCommand extends IhmCommand{
 
 	private static final int id = 5;
 	private static final String libelle = "Autoriser un decouvert";
 	private ClientService clientService;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	
-	public AutoriserDecouvertCommand(ClientService pclientService, Scanner pinput) {
+	public AutoriserDecouvertCommand(ClientService pclientService) {
 		clientService = pclientService;
-		input = pinput;
 	}
 	
 	@Override
 	public void execute() {
-		AjouterDecouvertAutorise(input);
+		AjouterDecouvertAutorise();
 	}
 	
-	public void AjouterDecouvertAutorise(Scanner input){
+	public void AjouterDecouvertAutorise(){
 		List<String[]> clientsString = clientService.getLibelleList();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
 		
-		System.out.println("Selectionnez un client: ");
-		int numClient = input.nextInt();
-		input.nextLine();
+		int numClient = input.readInt("Selectionnez un client: ", 0, clientsString.size()-1);
 		
 		Client client = clientService.getClient(clientsString.get(numClient-1)[1]);
 		List<Compte> comptesList = client.getComptesList();
@@ -45,13 +42,8 @@ public class AutoriserDecouvertCommand extends IhmCommand{
 		for(int i = 0; i < comptesListCopie.size(); i++)
 			System.out.println((i+1)+". "+comptesListCopie.get(i).getLibelle());
 		
-		System.out.println("Selectionnez un compte: ");
-		int numCompte = input.nextInt();
-		input.nextLine();
-		
-		System.out.println("Montant (0 pour abandon): ");
-		double montant = input.nextDouble();
-		input.nextLine();
+		int numCompte = input.readInt("Selectionnez un compte: ", 0, comptesListCopie.size()-1);
+		double montant = input.readDouble("Montant (0 pour abandon): ", 0, 0);
 		if(montant > 0){
 			((CompteCourant)comptesListCopie.get(numCompte-1)).setMontantDecouvertAutorise(montant);
 			clientService.ajouterModifier(client);

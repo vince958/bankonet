@@ -1,29 +1,26 @@
 package com.bankonet.command;
 
 import java.util.List;
-import java.util.Scanner;
 
 import com.bankonet.metier.InitService;
 import com.bankonet.utils.Client;
+import com.bankonet.utils.others.InputSingleton;
 
 public class RechercherCommand extends IhmCommand{
 
 	private static final int id = 7;
 	private static final String libelle = "Rechercher un client";
 	private InitService initService;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	
-	public RechercherCommand(InitService pinitService, Scanner pinput) {
+	public RechercherCommand(InitService pinitService) {
 		initService = pinitService;
-		input = pinput;
 	}
 	
 	@Override
 	public void execute() {
-		System.out.println("Entrez le nom d'un client: ");
-		String nom = input.nextLine();
-		System.out.println("Entrez le prenom d'un client: ");
-		String prenom = input.nextLine();
+		String nom = input.readString("Entrez le nom d'un client: ");
+		String prenom = input.readString("Entrez le prenom d'un client: ");
 		
 		List<Client> clients = initService.rechercherClient(nom, prenom);
 		for(Client client:clients)

@@ -1,37 +1,34 @@
 package com.bankonet.command;
 
 import java.util.List;
-import java.util.Scanner;
 
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.CompteEpargne;
+import com.bankonet.utils.others.InputSingleton;
 
 public class AjouterCompteEpargneCommand extends IhmCommand{
 
 	private static final int id = 4;
 	private static final String libelle = "Ajouter un compte epargne";
 	private ClientService clientService;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	
-	public AjouterCompteEpargneCommand(ClientService pclientService, Scanner pinput) {
+	public AjouterCompteEpargneCommand(ClientService pclientService) {
 		clientService = pclientService;
-		input = pinput;
 	}
 	
 	@Override
 	public void execute() {
-		AjouterCompteCourantEpargne(false, input);
+		AjouterCompteCourantEpargne(false);
 	}
 	
-	public void AjouterCompteCourantEpargne(boolean isCourant, Scanner input){
+	public void AjouterCompteCourantEpargne(boolean isCourant){
 		List<String[]> clientsString = clientService.getLibelleList();
 		for(int i = 0; i < clientsString.size(); i++)
 			System.out.println((i+1)+". "+clientsString.get(i)[0]);
-		System.out.println("Selectionnez un client: ");
-		int num = input.nextInt();
-		input.nextLine();
+		int num = input.readInt("Selectionnez un client: ", 0, clientsString.size()-1);
 		
 		Client client = clientService.getClient(clientsString.get(num-1)[1]);
 		if(isCourant){

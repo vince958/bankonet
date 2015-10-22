@@ -10,6 +10,7 @@ import com.bankonet.utils.others.TypeCompte;
 @DiscriminatorValue("COURANT")
 public class CompteCourant extends Compte {
 	
+	private static final long serialVersionUID = 1L;
 	@Column(name="decouvert", length = 200, nullable = false)
 	private double montantDecouvertAutorise;
 	private static int nbComptesCourants = 0;

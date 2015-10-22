@@ -1,25 +1,22 @@
 package com.bankonet.command;
 
-import java.util.Scanner;
-
 import com.bankonet.metier.InitService;
+import com.bankonet.utils.others.InputSingleton;
 
 public class SupprimerCommand extends IhmCommand{
 
 	private static final int id = 9;
 	private static final String libelle = "Supprimer un client";
 	private InitService initService;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	
-	public SupprimerCommand(InitService pinitService, Scanner pinput) {
+	public SupprimerCommand(InitService pinitService) {
 		initService = pinitService;
-		input = pinput;
 	}
 	
 	@Override
 	public void execute() {
-		System.out.println("Entrez le login du client: ");
-		String login = input.nextLine();
+		String login = input.readString("Entrez le login du client: ");
 		initService.supprimerClient(login);
 	}
 	

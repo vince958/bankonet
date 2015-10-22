@@ -1,56 +1,45 @@
 package com.bankonet.command;
 
-import java.util.Scanner;
-
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
 import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.exception.TypeException;
 import com.bankonet.utils.others.Civilite;
+import com.bankonet.utils.others.InputSingleton;
 
 public class OuvrirCompteCourantCommand extends IhmCommand{
 
 	private static final int id = 1;
 	private static final String libelle = "Ouvrir un compte courant";
 	private ClientService clientService;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	
-	public OuvrirCompteCourantCommand(ClientService pclientService, Scanner pinput) {
+	public OuvrirCompteCourantCommand(ClientService pclientService) {
 		clientService = pclientService;
-		input = pinput;
 	}
 	
 	@Override
 	public void execute() {
 		try {
-			ouvrirCompte(input);
+			ouvrirCompte();
 		} catch (TypeException e) {
 			e.printStackTrace();
 		}
 	}
 	
-public void ouvrirCompte(Scanner input) throws TypeException{
+	public void ouvrirCompte() throws TypeException{
 		
-		System.out.println("Entrez la civilite(1.Mr 2.Mme 3.Mlle): ");
-		int temp = input.nextInt();
+		int temp = input.readInt("Entrez la civilite(1.Mr 2.Mme 3.Mlle): ", 1, 3);
 		Civilite civilite;
 		if(temp == 1) civilite = Civilite.MONSIEUR;
 		else if (temp == 2) civilite = Civilite.MADAME;
 		else if (temp == 3) civilite = Civilite.MADEMOISELLE;
 		else throw new TypeException("Type inconnu!");
 		
-		input.nextLine();
-		System.out.println("Entrez le nom du client: ");
-		String nom = input.nextLine();
-		
-		System.out.println("Entrez le prenom du client: ");
-		String prenom = input.nextLine();
-		
-		System.out.println("Entrez le login du client: ");
-		String login = input.nextLine();
-
-		System.out.println("Entrez le mdp du client: ");
-		String mdp = input.nextLine();
+		String nom = input.readString("Entrez le nom du client: ");
+		String prenom = input.readString("Entrez le prenom du client: ");
+		String login = input.readString("Entrez le login du client: ");
+		String mdp = input.readString("Entrez le mdp du client: ");
 		
 		Client client = new Client(login, mdp, civilite, nom, prenom);
 		CompteCourant compte = new CompteCourant(nom, prenom, 50.0d, 500.0d);

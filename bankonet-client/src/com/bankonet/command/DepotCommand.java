@@ -1,7 +1,6 @@
 package com.bankonet.command;
 
 import java.util.List;
-import java.util.Scanner;
 
 import com.bankonet.metier.ClientService;
 import com.bankonet.utils.Client;
@@ -9,6 +8,7 @@ import com.bankonet.utils.Compte;
 import com.bankonet.utils.CompteCourant;
 import com.bankonet.utils.CompteEpargne;
 import com.bankonet.utils.exception.CompteException;
+import com.bankonet.utils.others.InputSingleton;
 
 public class DepotCommand extends IhmCommand{
 
@@ -16,29 +16,26 @@ public class DepotCommand extends IhmCommand{
 	private static final String libelle = "Effectuer un depot";
 	private ClientService clientService;
 	private String login;
-	private Scanner input;
+	private InputSingleton input = InputSingleton.getInstance();
 	
-	public DepotCommand(ClientService pclientService, String plogin, Scanner pinput) {
+	public DepotCommand(ClientService pclientService, String plogin) {
 		clientService = pclientService;
 		login = plogin;
-		input = pinput;
 	}
 	
 	@Override
 	public void execute() {
 		Client client = clientService.getClient(login);
-		effectuerDepotRetrait(client, true, input);
+		effectuerDepotRetrait(client, true);
 		System.out.println(client.consulterComptes());
 	}
 	
-	public void effectuerDepotRetrait(Client client, boolean isDepot, Scanner input){
+	public void effectuerDepotRetrait(Client client, boolean isDepot){
 		List<Compte> comptesList = client.getComptesList();
 		for(int i = 0; i < comptesList.size(); i++)
 			System.out.println((i+1)+". "+comptesList.get(i).getLibelle());
 		
-		System.out.println("Selectionnez un compte: ");
-		int num = input.nextInt();
-		input.nextLine();
+		int num = input.readInt("Selectionnez un compte: ", 0, comptesList.size()-1);
 
 		String type = comptesList.get(num-1).getType().getValue();
 		boolean testRetrait = false;
@@ -47,9 +44,7 @@ public class DepotCommand extends IhmCommand{
 		if(type.equals("Courant")) debitMax = ((CompteCourant)comptesList.get(num-1)).calculerDebitMaximum();
 		else if(type.equals("Epargne")) debitMax = ((CompteEpargne)comptesList.get(num-1)).calculerDebitMaximum();
 		do{
-			System.out.println("Montant (0 pour abandon): ");
-			montant = input.nextDouble();
-			input.nextLine();
+			montant = input.readDouble("Montant (0 pour abandon): ", 0, 0);
 			testRetrait = montant > debitMax;
 			if(testRetrait && !isDepot && montant != 0)
 				System.out.println("Debit impossible, retrait maximum atteind!");
