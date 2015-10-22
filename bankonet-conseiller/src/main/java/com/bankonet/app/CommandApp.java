@@ -22,7 +22,6 @@ import com.bankonet.metier.InitService;
 import com.bankonet.utils.others.InputSingleton;
 
 public class CommandApp {
-	
 	//private static DaoFactory factory = new DaoFactoryFile("../bankonet-lib/clients.properties", "../bankonet-lib/comptes.properties");
 	//private static DaoFactory factory = new DaoFactorySQL("jdbc:mysql://localhost/bankonet", "root", "poupette");
 	private static DaoFactory factory = new DaoFactoryJpa("bankonet-lib");
