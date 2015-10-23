@@ -8,13 +8,31 @@
   <artifactId>bankonet-parent</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
-
-  <properties>
-   	  <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
-   	  <jdbc.url>jdbc:mysql://localhost/bankonet</jdbc.url>
-   	  <jdbc.user>root</jdbc.user>
-   	  <jdbc.password>poupette</jdbc.password>
-  </properties>
+<!-- 
+  <profiles>
+  	<profile>
+  	  <id>developpement</id>
+	  <properties>
+	   	  <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+	   	  <jdbc.url>jdbc:mysql://localhost/bankonet</jdbc.url>
+	   	  <jdbc.user>root</jdbc.user>
+	   	  <jdbc.password>poupette</jdbc.password>
+	  </properties>
+    </profile>
+    <profile>
+      <id>production</id>
+ -->
+ 
+	  <properties>
+	   	  <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+	   	  <jdbc.url>jdbc:mysql://localhost/bankonet</jdbc.url>
+	   	  <jdbc.user>root</jdbc.user>
+	   	  <jdbc.password>poupette</jdbc.password>
+	  </properties>
+<!-- 
+    </profile>
+  </profiles>
+ -->
 
   <build>
      <resources>
