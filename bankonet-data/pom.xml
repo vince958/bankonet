@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                      http://maven.apache.org/xsd/maven-4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dta</groupId>
+  <artifactId>bankonet-data</artifactId>
+  <version>1.0.0</version>
+  
+   <properties>
+   	  <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+   	  <jdbc.url>jdbc:mysql://localhost/bankonet</jdbc.url>
+   	  <jdbc.user>root</jdbc.user>
+   	  <jdbc.password>poupette</jdbc.password>
+   </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+      </plugins>
+   </pluginManagement>
+   
+   <plugins>
+   	  <plugin>
+   	  
+   	  		<groupId>org.codehaus.mojo</groupId>
+        	<artifactId>sql-maven-plugin</artifactId>
+        	
+			<dependencies>
+			  	<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<scope>runtime</scope>
+					<version>5.1.35</version>
+				</dependency>
+			</dependencies>
+			
+        	<configuration>
+		          <driver>${jdbc.driver}</driver>
+		          <url>${jdbc.url}</url>
+		          <username>${jdbc.user}</username>
+		          <password>${jdbc.password}</password>
+        	</configuration>
+		    <executions>
+		          <execution>
+		            <id>clean-data</id>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>execute</goal>
+		            </goals>
+		            <configuration>
+		              <orderFile>ascending</orderFile>
+		              <fileset>
+		                <basedir>${basedir}</basedir>
+		                <includes>
+		                  <include>src/main/sql/clean-db.sql</include>
+		                </includes>
+		              </fileset>
+		            </configuration>
+		          </execution>
+		          <execution>
+		            <id>insert-data</id>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>execute</goal>
+		            </goals>
+		            <configuration>
+		              <orderFile>ascending</orderFile>
+		              <fileset>
+		                <basedir>${basedir}</basedir>
+		                <includes>
+		                  <include>src/main/sql/init-db.sql</include>
+		                </includes>
+		              </fileset>
+		            </configuration>
+		          </execution>
+		  </executions>
+      </plugin>
+   </plugins>
+  </build>
+</project> 

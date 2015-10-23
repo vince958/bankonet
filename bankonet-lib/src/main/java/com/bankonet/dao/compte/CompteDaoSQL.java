@@ -96,7 +96,7 @@ public class CompteDaoSQL implements CompteDao {
 					taux = (float)((CompteEpargne)compte).getTauxInteret();
 				}
 				statement.execute(
-						"INSERT INTO comptes (intitule, numero, type, libelle, solde, decouvert, taux) VALUES ('"+compte.getIntitule()+"', '"+compte.getNumero()+"', '"+compte.getType()+"', '"+compte.getLibelle()+"', '"+compte.getSolde()+"', "+decouvert+", "+taux+")"+
+						"INSERT INTO comptes (intitule, numero, type, libelle, solde, decouvert, taux) VALUES ('"+compte.getIntitule()+"', '"+compte.getNumero()+"', '"+compte.getType()+"', '"+compte.getLibelle()+"', "+compte.getSolde()+", "+decouvert+", "+taux+")"+
 						"  ON DUPLICATE KEY UPDATE intitule='"+compte.getIntitule()+"', numero='"+compte.getNumero()+"', type='"+compte.getType()+"', libelle='"+compte.getLibelle()+"', solde='"+compte.getSolde()+"', decouvert="+decouvert+", taux="+taux+" ;"
 						);
 				statement.close();

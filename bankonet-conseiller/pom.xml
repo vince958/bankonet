@@ -18,8 +18,34 @@
             <target>1.8</target>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.bankonet.app.CommandApp</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+        </plugin>
       </plugins>
    </pluginManagement> 
+   
+   <plugins>
+   	<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+   </plugins>
+   
   </build>
   <dependencies>
   	<dependency>
