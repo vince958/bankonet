@@ -7,10 +7,10 @@
 		<class>com.bankonet.utils.CompteEpargne</class>
 		<class>com.bankonet.utils.Client</class>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/bankonet"/>
-			<property name="javax.persistence.jdbc.password" value="poupette"/>
-			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
+			<property name="javax.persistence.jdbc.password" value="${jdbc.password}"/>
+			<property name="javax.persistence.jdbc.user" value="${jdbc.user}"/>
+			<property name="javax.persistence.jdbc.driver" value="${jdbc.driver}"/>
 		</properties>
 	</persistence-unit>
 </persistence>
