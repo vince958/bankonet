@@ -47,7 +47,6 @@
   	<module>bankonet-lib</module>
   	<module>bankonet-client</module>
   	<module>bankonet-conseiller</module>
-  	<module>bankonet-data</module>
   </modules>
 
 </project> 
